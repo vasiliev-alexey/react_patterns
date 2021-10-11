@@ -1,8 +1,13 @@
-import * as React from 'react';
+import React from 'react';
+import ColorExample from './components/ColorExample';
+import ColorProvider from 'src/hooks/useColors';
 
-import StarRating from './components/StarRating';
 function app(): React.ReactElement {
-  return <StarRating />;
+  return (
+    <ColorProvider>
+      <ColorExample />
+    </ColorProvider>
+  );
 }
 
 export default app;

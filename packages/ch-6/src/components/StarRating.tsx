@@ -1,16 +1,31 @@
 import React from 'react';
-import { FaStar } from 'react-icons/fa';
+import Star from './Star';
 
-const StarRating: React.FC = () => {
+type t = { style?: React.CSSProperties } & {
+  totalStars?: number;
+  selectedStars?: number;
+  onRate: (rate: number) => void;
+};
+
+const StarRating: React.FC<t> = ({
+  totalStars = 5,
+  style,
+  selectedStars,
+  onRate,
+}) => {
   return (
-    <>
-      <FaStar color="red" />
-      <FaStar color="red" />
-      <FaStar color="red" />
-      <FaStar color="grey" />
-      <FaStar color="grey" />
-      <p>sss</p>
-    </>
+    <div style={{ padding: '5px', ...style }}>
+      {[...Array(totalStars)].map((_, i) => (
+        <Star
+          key={i}
+          selected={selectedStars > i}
+          onSelect={() => onRate(i + 1)}
+        />
+      ))}
+      <p>
+        {selectedStars} of {totalStars}
+      </p>
+    </div>
   );
 };
 
