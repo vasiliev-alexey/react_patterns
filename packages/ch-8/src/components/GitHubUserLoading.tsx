@@ -16,7 +16,11 @@ const GitHubUserLoading: React.FC<GitHubUserPropsType> = ({ login }) => {
   useEffect(() => {
     if (!login) return;
     setLoading(true);
-    fetch(`https://api.github.com/users/${login}`)
+    fetch(`https://api.github.com/users/${login}`, {
+      headers: new Headers({
+        Authorization: `token ${process.env.GH_TOKEN}`,
+      }),
+    })
       .then((response) => response.json())
       .then((data) => {
         setData(data);

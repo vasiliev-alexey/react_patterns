@@ -12,7 +12,11 @@ function useFetch<T>(uri: string): {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(uri);
+        const res = await fetch(uri, {
+          headers: new Headers({
+            Authorization: `token ${process.env.GH_TOKEN}`,
+          }),
+        });
         const json = await res.json();
 
         setData(json);
