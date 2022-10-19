@@ -8,6 +8,9 @@
     "*.{js,ts}": "eslint --fix",
     "*.{js,ts,md,json,yml,html}": "prettier --write"
   },
+  "workspaces": [
+    "./packages/*"
+  ],
   "devDependencies": {
     "@babel/core": "^7.14.8",
     "@babel/register": "^7.15.3",
