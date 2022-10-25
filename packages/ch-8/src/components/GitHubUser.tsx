@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage';
+import React from 'react';
+//import useLocalStorage from '../hooks/useLocalStorage';
+import useFetch from '../hooks/useFetch';
 
-const GIT_HUB_LOGIN_KEY = 'github-login';
+//const GIT_HUB_LOGIN_KEY = 'github-login';
 
 type GitHubUserPropsType = { login: string };
 type GitHubUserDataType = {
@@ -12,47 +13,22 @@ type GitHubUserDataType = {
 };
 
 const GitHubUser: React.FC<GitHubUserPropsType> = ({ login }) => {
-  const [profile, setProfile] = useLocalStorage<GitHubUserDataType>(
-    GIT_HUB_LOGIN_KEY,
-    null
+  const { loading, data, error } = useFetch<GitHubUserDataType>(
+    `https://api.github.com/users/${login}`
   );
+  if (loading) return <h1>loading...</h1>;
+  if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>;
 
-  const [data, setData] = useState<GitHubUserDataType>(profile);
-
-  useEffect(() => {
-    if (!data || (profile && profile.login === data.login)) {
-      return;
-    }
-
-    const { name, login: gitHubLogin, avatar_url, location } = data;
-
-    setProfile({
-      name,
-      login: gitHubLogin,
-      avatar_url,
-      location,
-    });
-  }, [data]);
-
-  useEffect(() => {
-    if (!login || (data && data.login === login)) {
-      return;
-    }
-
-    fetch(`https://api.github.com/users/${login}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-        console.log('data - set', data);
-      })
-      .catch(console.error);
-  }, [login]);
-
-  if (data) {
-    return <pre>{JSON.stringify(data, null, 2)}</pre>;
-  }
-
-  return <div>{login}</div>;
+  return (
+    <div className="githubUser">
+      <img src={data.avatar_url} alt={data.login} style={{ width: 200 }} />
+      <div>
+        <h1>{data.login}</h1>
+        {data.name && <p>{data.name}</p>}
+        {data.location && <p>{data.location}</p>}
+      </div>
+    </div>
+  );
 };
 
 export default GitHubUser;
