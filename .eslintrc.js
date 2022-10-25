@@ -11,6 +11,7 @@ module.exports = {
     'eslint-plugin-import',
     'prettier',
     'jest',
+    'react-hooks',
   ],
 
   extends: [
@@ -52,5 +53,7 @@ module.exports = {
     ],
     'import/no-unresolved': 'off', // https://github.com/typescript-eslint/typescript-eslint/issues/1624
     'import/extensions': ['warn', 'never', { json: 'off' }], // https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/extensions.md
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
   },
 };
